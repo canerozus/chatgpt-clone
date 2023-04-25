@@ -15,44 +15,62 @@ function Home() {
       setValue(e.target.value)
     }, [])
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const chatHistory = [...conversation, { role: "user", content: value }]
-      const response = await fetch("/api/openAiChat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: chatHistory })
-      })
-      const data = await response.json()
-      setValue("")
-      setConversation([
-        ...chatHistory, { role: "assistant", content: data.result.choices[0].message.content }
+    try {
+      if (e.key === "Enter") {
+        const chatHistory = [...conversation, { role: "user", content: value }]
+        const response = await fetch("/api/openAIChat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: chatHistory })
+        })
+        console.log(response)
 
-      ])
+        const data = await response.json()
+        setValue("")
+        setConversation([
+          ...chatHistory,
+          { role: "assistant", content: data.result.choices[0].message.content }
+        ])
+      }
+    } catch(err) {
+      console.log(err)
     }
+  }
+  const handleRefresh = () => {
+    inputRef.current?.focus()
+    setValue("")
+    setConversation([])
   }
 
   return (
     <div className='w-full'>
       <div className='flex flex-col items-center justify-center mt-40 text-center'>
-        <h1 className='text-4xl ' >Hi there, I am AVA </h1>
-      </div >
-      <div className='my-12'>
-        <p className='mb-6 font bold'>Please Type your prompt</p>
-        <input placeholder='Type here'
-          className='w-full max-w-xs input input-bordered input-secondary'
-          value={value}
-          onChange={handleInput}
-          onKeyDown={handleKeyDown}
-        />
-        <div className="textarea">
+        <h1 className='text-6xl'>Hi there, I am AVA</h1>
+        <div className='my-12'>
+          <p className='mb-6 font-bold'>Please type your prompt</p>
+          <input
+            placeholder='Type here'
+            className='w-full max-w-xs input input-bordered input-secondary'
+            value={value}
+            onChange={handleInput}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            className='btn btn-primary btn-xs mt-6'
+            onClick={handleRefresh}
+          >
+            Start New Conversation
+          </button>
+        </div>
+        <div className='textarea'>
           {conversation.map((item, index) => (
             <React.Fragment key={index}>
               <br />
               {item.role === "assistant" ? (
                 <div className='chat chat-end'>
-                  <div className='chat chat-bubble-secondary'>
+                  <div className='chat-bubble chat-bubble-secondary'>
                     <strong className='badge badge-primary'>AVA</strong>
                     <br />
                     {item.content}
@@ -60,10 +78,10 @@ function Home() {
                 </div>
               ) : (
                 <div className='chat chat-start'>
-                  <div className="chat-bubble chat-bubble-primary">
-                    <strong className='badge badge-primary'>User</strong>
+                  <div className='chat-bubble chat-bubble-primary'>
+                    <strong className='badge badge-secondary'>User</strong>
                     <br />
-
+                    {item.content}
                   </div>
                 </div>
               )}

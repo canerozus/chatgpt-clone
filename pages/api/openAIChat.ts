@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
+import type { NextApiRequest, NextApiResponse } from "next"
+import { Configuration, OpenAIApi } from "openai"
 
 const configration = new Configuration({
-    apiKey: process.env.OPENAIA_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 const openai = new OpenAIApi(configration);
