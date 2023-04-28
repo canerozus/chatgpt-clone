@@ -25,7 +25,6 @@ function Home() {
           },
           body: JSON.stringify({ message: chatHistory })
         })
-        console.log(response)
 
         const data = await response.json()
         setValue("")
