@@ -4,12 +4,12 @@ Welcome to the ChatGPT Clone project! This application is a clone of ChatGPT, a 
 ## Technologies Used
 The following technologies were used in building this application:
 
-Next.js
-TypeScript
-React
-Tailwind CSS
-DaisyUI
-OpenAI
+- Next.js
+- TypeScript
+- React
+- Tailwind CSS
+- DaisyUI
+- OpenAI
 
 ## Features
 Interactive Conversations
